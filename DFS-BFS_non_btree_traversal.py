@@ -9,15 +9,14 @@ class Node(object):
         self.name = name
         self.children = children
 
-
     def dfs(self, node, lst):
 
-        #print(cur_node.name)
         lst.append(node.name)
 
         if len(node.children) != 0:
             for idx in range(len(node.children)):
                 self.dfs(node.children[idx],lst)
+
 
     def bfs(self, node, lst):
 
@@ -55,6 +54,6 @@ if __name__ == '__main__':
     lst = []
     root = create_tree()
     # root2 = Node(1, [Node(2, [Node(5, [Node(10)]), Node(6, [Node(11), Node(12), Node(13)])]), Node(3), Node(4, [Node(7), Node(8), Node(9)])])
-    # root.dfs(root,lst)
-    root.bfs(root, lst)
+    root3 = Node(1, [Node(2, [Node(4, [Node(8), Node(9)]), Node(5, [Node(10), Node(11)])]), Node(3, [Node(6, [Node(12), Node(13)]), Node(7, [Node(14), Node(15)])])])
+    root3.dfs(root3, lst)
     print(lst)
