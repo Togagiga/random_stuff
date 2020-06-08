@@ -4,6 +4,10 @@ To train execute all code
 To then classify new data best use Jupyter Notebook
 
 (see .ipynb file)
+
+FUTURE EXPANSION:
+	pruning
+	random forrests
 '''
 
 import sys, os
@@ -13,7 +17,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from collections import deque
-from tqdm import tqdm
+from tqdm import tqdm, trange
+from time import sleep
 
 
 TEST_PERCENTAGE = 0.1
@@ -186,7 +191,11 @@ class Node():
 		self.data = data
 		self.left = None
 		self.right = None
-		self.classification = getNodeClassification(self.data)
+
+		if len(self.data) != 0:
+			self.classification = getNodeClassification(self.data)
+		else:
+			self.classification = None
 
 		self.feature, self.split = getSplit(self.data)
 		self.data_left, self.data_right = getNodePoints(self.data, self.feature, self.split)
@@ -201,7 +210,6 @@ class Tree():
 	def add(self, node, lst, cur_layer):
 		queue = []
 		queue.append(node)
-		#count = 0
 
 		while len(queue) > 0:
 
@@ -215,7 +223,6 @@ class Tree():
 				if len(node.data) != 0:
 					node.left = Node(node.data_left)
 					node.right = Node(node.data_right)
-					#count += 1
 					cur_layer.append(node.left.data)      # when leaf node is added add data
 					cur_layer.append(node.right.data)
 
@@ -300,11 +307,17 @@ class Tree():
 def train_test(depth, train_data, test_data):
 
 	tree = Tree(Node(train_data))
-	tree.testTree(test_data)
-
-	for i in range(depth):
-		tree.addLayer()
-		tree.testTree(test_data)
+	acc_test = tree.testTree(test_data)
+	
+	if depth == 0:
+		pass
+	else:
+		label = 1
+		for i in trange(depth, desc = (f"Adding Layer {label} -------> ")):
+			acc_train = tree.addLayer()
+			acc_test = tree.testTree(test_data)
+			sleep(0.01)
+			label += 1
 
 	return tree
 
