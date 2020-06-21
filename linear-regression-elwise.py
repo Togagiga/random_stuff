@@ -72,11 +72,11 @@ def GD_step(W, x, y, alpha):
 alpha = 1.4
 num_points = 20
 order_poly = 4
-epochs = 20000
+epochs = 5000
 ################
 
 '''
-good start values: 1.4, 20, 4, 20000
+good start values: 1.4, 20, 4, 10000
 
 NOTE: if order_ploy > num_points we get overfitting as less independent data than unknowns (always need more training samples than features)
 '''
