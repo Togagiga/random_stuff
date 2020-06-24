@@ -10,6 +10,15 @@ loop starts over again
 
 # with current settings algorithm achieves a max of 31 for the function x**2 - x
 
+'''
+Things to think about:
+	how the shape of the function affects algorithm (multiple peaks etc.)
+	how mutation is happening (could change to adjust one bit only etc.)
+	size of generation produced, does that affect speed of convergence to optimal?
+	mating combinations -> could mate best ones with each other instead of as they are sampled
+	add certain percentage of best survivors straight to next gen
+'''
+
 import numpy as np
 from collections import deque
 
@@ -110,9 +119,9 @@ def mateGen(next_gen):
 
 	return children
 
-def runIteration(data):
+def runIteration(data, generation_size):
 	cum_probs = getCumProbability(data)
-	next_gen = getNextGen(cum_probs)
+	next_gen = getNextGen(cum_probs, generation_size)
 	print(f"Next_Generation: {next_gen}")
 	children = mateGen(next_gen)
 	return children
@@ -122,15 +131,17 @@ def runIteration(data):
 
 
 data = ["01100", "11001", "01000", "10011"]     # starting generation
+print(f"First Generation: {data}")
 
-print(f"Function Values: {getFitness(data)}")
-print(f"Probabilities: {getSurvivalChance(data)}")
+# print(f"Function Values: {getFitness(data)}")
+# print(f"Probabilities: {getSurvivalChance(data)}")
 # print(f"Cumulative Probabilities: {getCumProbability(data)}")
 
 generations = 50
+generation_size = 4
 mutation_const = 0.9
 for gen in range(generations):
 
-	data = runIteration(data)
+	data = runIteration(data, 4)
 	print(data)
 	print([bin2num(item) for item in data])
